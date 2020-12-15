@@ -2,12 +2,12 @@ package com.example.contactbook
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.example.contactbook.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +21,19 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, MainFragment())?.commit()
     }
 
-    fun goDetail() {
+    fun goDetail(user: User) {
+
         val detailFragment = DetailFragment()
-        supportFragmentManager.beginTransaction().add(R.id.frameLayout, DetailFragment()).addToBackStack("detail").commit()
+        var bundle = Bundle()
+        bundle.putInt("no", user.no)
+        bundle.putString("name", user.name)
+        bundle.putString("description", user.description)
+        detailFragment.arguments = bundle
+
+        supportFragmentManager.beginTransaction().add(R.id.frameLayout, detailFragment).addToBackStack("detail").commit()
+    }
+
+    fun goBack(){
+        onBackPressed()
     }
 }

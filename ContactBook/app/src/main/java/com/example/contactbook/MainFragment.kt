@@ -69,7 +69,6 @@ class MainFragment : Fragment() {
         adapter.listData = loadData()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity?.baseContext)
-
         binding.textCount.text = "저장된 연락처 : ${data.size}개"
 
         return view

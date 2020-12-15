@@ -21,20 +21,13 @@ class CustomAdapter(context: MainActivity?) : RecyclerView.Adapter<CustomAdapter
         holder.setUser(user)
 
         holder.itemView.setOnClickListener {
-            mainActivity.goDetail()
-//            Toast.makeText(itemBinding.root.context, "클릭 이벤트 호출!!", Toast.LENGTH_SHORT).show()
+            mainActivity.goDetail(user)
         }
     }
 
     override fun getItemCount(): Int = listData.size
 
     class Holder(private val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root) {
-
-//        init {
-//            binding.root.setOnClickListener {
-//
-//            }
-//        }
 
         fun setUser(user: User) {
             binding.textNo.text = "${user.no}"

@@ -1,10 +1,14 @@
 package com.example.contactbook
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.example.contactbook.databinding.FragmentDetailBinding
+import com.example.contactbook.databinding.FragmentMainBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +25,12 @@ class DetailFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var mainActivity : MainActivity? = null
+    private var _binding: FragmentDetailBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -32,7 +42,31 @@ class DetailFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        // return inflater.inflate(R.layout.fragment_detail, container, false)
+
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        val no : Int = arguments?.getInt("no")!!
+        val name : String = arguments?.getString("name")!!
+        val description : String = arguments?.getString("description")!!
+
+        setUserInfo(User(no, name, description))
+
+        binding.btnBack.setOnClickListener {
+            mainActivity?.goBack()
+        }
+
+        return view
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
+
+    fun setUserInfo(user : User) {
+        binding.textName.text = user.name
     }
 
     companion object {
