@@ -65,8 +65,9 @@ class DetailFragment : Fragment() {
         mainActivity = context as MainActivity
     }
 
-    fun setUserInfo(user : User) {
+    private fun setUserInfo(user : User) {
         binding.textName.text = user.name
+        binding.editDescription.setText(user.description)
     }
 
     companion object {
