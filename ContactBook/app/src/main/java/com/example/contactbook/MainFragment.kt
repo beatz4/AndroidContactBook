@@ -45,8 +45,6 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        // return inflater.inflate(R.layout.fragment_main, container, false)
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -65,8 +63,15 @@ class MainFragment : Fragment() {
 
         // recycler view
         val data:MutableList<User> = loadData()
-        var adapter = CustomAdapter(mainActivity)
+        var adapter = CustomAdapter()
         adapter.listData = loadData()
+
+        adapter.setItemClickListener(object : CustomAdapter.ItemClickListener {
+            override fun onClick(view: View, position: Int) {
+                mainActivity?.goDetail(adapter.listData.get(position))
+            }
+        })
+
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity?.baseContext)
         binding.textCount.text = "저장된 연락처 : ${data.size}개"

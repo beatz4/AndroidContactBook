@@ -1,15 +1,20 @@
 package com.example.contactbook
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.contactbook.databinding.ItemRecyclerBinding
 
-class CustomAdapter(context: MainActivity?) : RecyclerView.Adapter<CustomAdapter.Holder>() {
+class CustomAdapter() : RecyclerView.Adapter<CustomAdapter.Holder>() {
 
-    private var mainActivity : MainActivity = context as MainActivity
+    private lateinit var itemClickListener : ItemClickListener
     private lateinit var itemBinding : ItemRecyclerBinding
     var listData = mutableListOf<User>()
+
+    interface ItemClickListener {
+        fun onClick(view: View, position: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : Holder {
         itemBinding = ItemRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,11 +26,15 @@ class CustomAdapter(context: MainActivity?) : RecyclerView.Adapter<CustomAdapter
         holder.setUser(user)
 
         holder.itemView.setOnClickListener {
-            mainActivity.goDetail(user)
+            itemClickListener.onClick(it, position)
         }
     }
 
     override fun getItemCount(): Int = listData.size
+
+    fun setItemClickListener(itemClickListener : ItemClickListener) {
+        this.itemClickListener = itemClickListener
+    }
 
     class Holder(private val binding: ItemRecyclerBinding) : RecyclerView.ViewHolder(binding.root) {
 

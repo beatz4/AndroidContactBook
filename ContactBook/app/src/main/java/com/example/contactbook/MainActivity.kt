@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         bundle.putString("description", user.description)
         detailFragment.arguments = bundle
 
-        supportFragmentManager.beginTransaction().add(R.id.frameLayout, detailFragment).addToBackStack("detail").commit()
+        supportFragmentManager.beginTransaction().replace(R.id.frameLayout, detailFragment).addToBackStack("detail").commit()
     }
 
     fun goBack(){
