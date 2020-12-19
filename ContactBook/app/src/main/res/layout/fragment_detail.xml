@@ -70,12 +70,12 @@
             android:textSize="30sp"
             android:text="이름 : " />
 
-        <TextView
-            android:id="@+id/textName"
+        <EditText
+            android:id="@+id/editName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="홍길동"
-            android:textSize="25sp"/>
+            android:hint="이름을 입력하세요">
+        </EditText>
 
         <View
             android:layout_width="match_parent"
@@ -107,6 +107,32 @@
             android:layout_marginBottom="10dp">
         </View>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right">
 
+            <Button
+                android:id="@+id/btnSave"
+                android:backgroundTint="@android:color/background_dark"
+                android:layout_gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="저장"
+                android:textSize="30sp"></Button>
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:backgroundTint="@android:color/background_dark"
+                android:layout_gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="취소"
+                android:textSize="30sp"></Button>
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

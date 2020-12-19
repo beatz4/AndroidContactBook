@@ -32,7 +32,6 @@ class MainFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -45,12 +44,14 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val view = binding.root
 
         binding.btnAddContact.setOnClickListener {
-            Toast.makeText(activity?.baseContext, "btnAddContact", Toast.LENGTH_LONG).show()
+
+            mainActivity?.goDetail()
+            //Toast.makeText(activity?.baseContext, "btnAddContact", Toast.LENGTH_LONG).show()
         }
 
         binding.btnViewDetail.setOnClickListener {
@@ -62,19 +63,19 @@ class MainFragment : Fragment() {
         }
 
         // recycler view
-        val data:MutableList<User> = loadData()
         var adapter = CustomAdapter()
-        adapter.listData = loadData()
-
+        // 가상 데이터 삽입
+        //insertTestData()
+        adapter.listData.addAll(mainActivity?.helper?.selectUser()!!)
         adapter.setItemClickListener(object : CustomAdapter.ItemClickListener {
             override fun onClick(view: View, position: Int) {
-                mainActivity?.goDetail(adapter.listData.get(position))
+                mainActivity?.goDetail(adapter.listData[position])
             }
         })
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity?.baseContext)
-        binding.textCount.text = "저장된 연락처 : ${data.size}개"
+        binding.textCount.text = "저장된 연락처 : ${adapter.listData.size}개"
 
         return view
     }
@@ -84,18 +85,16 @@ class MainFragment : Fragment() {
         mainActivity = context as MainActivity
     }
 
-    private fun loadData() : MutableList<User> {
-        val data:MutableList<User> = mutableListOf()
+    private fun insertTestData() {
+
+        mainActivity?.helper?.deleteAll()
 
         for (no in 1..100) {
             val name = "홍길동 ${no}"
             val description = "홍길동 ${no}의 연락처입니다."
-            val user = User(no, name, description)
 
-            data.add(user)
+            mainActivity?.helper?.insertUser(name, description)
         }
-
-        return data
     }
 
     companion object {

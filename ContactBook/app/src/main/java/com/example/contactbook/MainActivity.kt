@@ -8,6 +8,7 @@ import com.example.contactbook.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    val helper = SqliteHelper(this, "user", 1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +22,13 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, MainFragment())?.commit()
     }
 
-    fun goDetail(user: User) {
+    fun goDetail() {
+        val detailFragment = DetailFragment()
+        detailFragment.setPageType(true)
+        supportFragmentManager.beginTransaction().replace(R.id.frameLayout, detailFragment).addToBackStack("detail").commit()
+    }
 
+    fun goDetail(user: User) {
         val detailFragment = DetailFragment()
         var bundle = Bundle()
         bundle.putInt("no", user.no)

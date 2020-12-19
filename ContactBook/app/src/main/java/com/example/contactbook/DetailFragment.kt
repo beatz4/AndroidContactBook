@@ -35,11 +35,12 @@ class DetailFragment() : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    // GALLERY
-    val PERMISSION_CODE_READ = 1001
-    val PERMISSION_CODE_WRITE = 1002
+    var isNew : Boolean = false
 
-    val REQUEST_IMAGE_CAPTURE = 1
+    // GALLERY
+    private val PERMISSION_CODE_READ = 1001
+    private val PERMISSION_CODE_WRITE = 1002
+    private val REQUEST_IMAGE_CAPTURE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,11 +58,18 @@ class DetailFragment() : Fragment() {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val no : Int = arguments?.getInt("no")!!
-        val name : String = arguments?.getString("name")!!
-        val description : String = arguments?.getString("description")!!
+        if (!this.isNew) {
+            var user = User()
+            user.no = arguments?.getInt("no")!!
+            user.name = arguments?.getString("name")!!
+            user.description = arguments?.getString("description")!!
 
-        setUserInfo(User(no, name, description))
+            setUserData(user)
+        }
+
+        val isVisible = if(isNew) View.VISIBLE else View.INVISIBLE
+        binding.btnSave.visibility = isVisible
+        binding.btnCancel.visibility = isVisible
 
         binding.btnBack.setOnClickListener {
             mainActivity?.goBack()
@@ -69,6 +77,21 @@ class DetailFragment() : Fragment() {
 
         binding.btnUserPic.setOnClickListener {
             checkPermissionForImage()
+        }
+
+        binding.btnSave.setOnClickListener {
+
+            val name = binding.editName.text.toString()
+            val description = binding.editDescription.text.toString()
+
+            mainActivity?.helper?.insertUser(name, description)
+            mainActivity?.goBack()
+
+            //Toast.makeText(activity?.baseContext, "binding.btnSave.setOnClickListener", Toast.LENGTH_LONG).show()
+        }
+
+        binding.btnCancel.setOnClickListener {
+            Toast.makeText(activity?.baseContext, "binding.btnCancel.setOnClickListener", Toast.LENGTH_LONG).show()
         }
 
         return view
@@ -94,8 +117,8 @@ class DetailFragment() : Fragment() {
         }
     }
 
-    private fun setUserInfo(user : User) {
-        binding.textName.text = user.name
+    private fun setUserData(user : User) {
+        binding.editName.setText(user.name)
         binding.editDescription.setText(user.description)
     }
 
@@ -121,12 +144,14 @@ class DetailFragment() : Fragment() {
         startActivityForResult(intent, IMAGE_PICK_CODE) // GIVE AN INTEGER VALUE FOR IMAGE_PICK_CODE LIKE 1000
     }
 
+    fun setPageType(isNew : Boolean) {
+        this.isNew = isNew;
+    }
+
     companion object {
 
         //image pick code
         private val IMAGE_PICK_CODE = 1000;
-        //Permission code
-        private val PERMISSION_CODE = 1001;
 
         /**
          * Use this factory method to create a new instance of
